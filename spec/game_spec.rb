@@ -68,4 +68,26 @@ describe Game do
     end
   end
 
+  describe "#get_valid_position" do
+    context 'it checks if the user has inputted a valid number' do
+        before do
+            allow(board).to receive(:space_taken?).and_return(false) 
+        end
+        it 'checks whether the game ends in a draw' do
+            expect(game.get_valid_position(2,board)).to eql(1)
+        end
+    end
+  end
+
+  describe "#get_valid_position" do
+    context 'it checks if the user has inputted a valid number' do
+        before do
+            allow(board).to receive(:space_taken?).and_return(false) 
+        end
+        it 'checks whether the game ends in a draw' do
+            expect(game.get_valid_position(5,board)).to eql(4)
+        end
+    end
+  end
+
 end
