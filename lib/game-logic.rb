@@ -24,11 +24,6 @@ class Game
       take_turns
     end
   
-    # def allocate_symbols 
-    #   @player1.sym = "X"
-    #   @player2.sym = "O"
-    # end
-  
     def take_turns 
       until draw? || @winner != ""
           (@current_turn.even?) ? turn(@player2) : turn(@player1)
@@ -45,16 +40,15 @@ class Game
       @current_turn += 1
     end
   
-    def get_valid_position(player) 
-      input = 0
+    def get_valid_position(input,board) 
       until valid_input?(input)
         print "#{player.name}, enter the cell number that you would like to use (1-9): "
-        input = gets.chomp.to_i
+        # input = gets.chomp.to_i
         print "Invalid input! " unless valid_input?(input)
         puts "Number is not in range 1-9" unless (input > 0 && input < 10)
-        puts "Cell taken." if @board.space_taken?(input - 1)
+        return "Cell taken." if @board.space_taken?(input - 1)
       end
-      input - 1
+      return input - 1
     end
   
     
@@ -72,8 +66,6 @@ class Game
         @winner = player.name if array.all? { |a| board.spaces[a] == player.sym }
       end
       if @winner == player.name
-        board.generate_board
-        # puts "#{player.name} is the winner!"
         return "win"
       end
     end
@@ -86,4 +78,3 @@ class Game
       end
     end
 end
-

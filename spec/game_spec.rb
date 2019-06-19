@@ -33,4 +33,39 @@ describe Game do
           end
       end
   end
+
+
+  describe "#check_winner" do
+    context 'it checks if there is a winner horizontally' do
+        before do
+            allow(board).to receive(:spaces).and_return(["X","X","X",1,2,3,4,5,6]) 
+        end
+        it 'checks whether the game has a winner horizontally' do
+            expect(game.check_winner(player1,board)).to eql("win")
+        end
+    end
+  end
+
+  describe "#check_winner" do
+    context 'it checks if there is a winner vertially' do
+        before do
+            allow(board).to receive(:spaces).and_return(["X",2,3,"X",5,6,"X",8,9]) 
+        end
+        it 'checks whether the game has a winner vertically' do
+            expect(game.check_winner(player1,board)).to eql("win")
+        end
+    end
+  end
+
+  describe "#check_winner" do
+    context 'it checks if there is a winner diagonally' do
+        before do
+            allow(board).to receive(:spaces).and_return(["X",2,3,4,"X",6,7,8,"X"]) 
+        end
+        it 'checks whether the game has a winner diagonally' do
+            expect(game.check_winner(player1,board)).to eql("win")
+        end
+    end
+  end
+
 end
