@@ -1,45 +1,36 @@
-require "./lib/game-logic"
-require "./lib/board"
-require "./lib/player"
-require "./bin/main"
+require './lib/board.rb'
+require './lib/game-logic.rb'
+require './lib/player.rb'
+require './bin/main.rb'
 
-RSpec.describe Game do
-  let(:board) { Board.new }
-  let(:player1) { Player.new("john","X") }
-  let(:player2) { Player.new("jane","O") }
-  let(:game) { Game.new(player1, player2, board) }
+describe Game do
+    let(:player1){Player.new("bright","X")}
+    let(:player2){Player.new("jolly","O")}
+    let(:game){Game.new}
+    let(:board){Board.new}
+    
+  
+    
   describe "#valid_input?" do
-    it "returns true if you have entered a valid input" do
-      allow(board).to receive(:space_taken?){false}
-      expect(game.send(:valid_input?,1)).to be true
-    end
-    # it "returns false if you have entered a valid input" do
-    #   player1 = double("Player")
-    #   player2 = double("Player")
-    #   board = double("Board")
-    #   game = Game.new(player1, player2, board)
-    #   allow(board).to receive(:space_taken?){false}
-    #   expect(game.send(:valid_input?,11)).to be false
-    # end
+      context 'when the input entered is acceptable' do
+          
+          it 'checks with the input entered is valid' do
+              expect(game.valid_input?(2)).to eql(true)
+          end
+          it 'checks with the input entered is valid' do
+            expect(game.valid_input?(20)).to eql(false)
+        end
+      end
   end
 
-  # describe "#draw?" do
-  #   it "returns true if the game is draw" do
-  #     player1 = double("Player")
-  #     player2 = double("Player")
-  #     board = double("Board")
-  #     game = Game.new(player1, player2, board)
-  #     allow(board).to receive(:board_full){true}
-  #     expect(game.send(:draw?)).to be true
-  #   end
-  #   it "returns false if the game isnt a draw" do
-  #     player1 = double("Player")
-  #     player2 = double("Player")
-  #     board = double("Board")
-  #     game = Game.new(player1, player2, board)
-  #     allow(board).to receive(:board_full){false}
-  #     expect(game.send(:draw?)).to be false
-  #   end
-  # end
-
+  describe "#draw?" do
+      context 'when its a draw' do
+          before do
+              allow(board).to receive(:board_full).and_return(true) 
+          end
+          it 'checks whether the game ends in a draw' do
+              expect(game.draw?(board)).to eql(true)
+          end
+      end
+  end
 end
