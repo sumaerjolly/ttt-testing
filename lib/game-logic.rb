@@ -8,24 +8,26 @@ class Game
       [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]
     ]
   
-    def initialize(player1, player2, board)
-      @player1 = player1
-      @player2 = player2
-      @board = board
+    def initialize
+      @player1 = Player.new("bright","X")
+      @player2 = Player.new("jolly","O")
+      @board = Board.new
   
       @current_turn = 1
-      @first_turn = @player1
+      @first_turn = @player1.name
       @winner = ""
   
+      # play
+    end
+  
+    def play 
       take_turns
     end
-
+  
     def take_turns 
       until draw? || @winner != ""
           (@current_turn.even?) ? turn(@player2) : turn(@player1)
       end
-      puts "\n"
-      @board.generate_board
       puts "Game was a draw!" if draw? 
     end
   
@@ -35,44 +37,44 @@ class Game
       @board.generate_board
       @board.add_symbol(get_valid_position(player), player.sym)
       check_winner(player)
-      display_winner(player)
       @current_turn += 1
     end
   
-    def get_valid_position(player) 
-      input = 0
+    def get_valid_position(input,board) 
       until valid_input?(input)
         print "#{player.name}, enter the cell number that you would like to use (1-9): "
-        input = gets.chomp.to_i
+        # input = gets.chomp.to_i
         print "Invalid input! " unless valid_input?(input)
         puts "Number is not in range 1-9" unless (input > 0 && input < 10)
-        puts "Cell taken." if @board.space_taken?(input - 1)
+        return "Cell taken." if @board.space_taken?(input - 1)
       end
-      input - 1
+      return input - 1
     end
   
     
   
-    def draw? 
-      (@board.board_full == true) && (@winner == "")
+    def draw?(board)
+      if board.board_full == true && @winner == ""
+        return true
+      else
+        return false
+      end 
     end
   
-    def check_winner(player) 
+    def check_winner(player,board) 
       @@winning_positions.each do |array|
-        @winner = player.name if array.all? { |a| @board.spaces[a] == player.sym }
+        @winner = player.name if array.all? { |a| board.spaces[a] == player.sym }
       end
-    end
-
-    def display_winner(player)
       if @winner == player.name
-        puts "\n"
-        @board.generate_board
-        puts "#{player.name} is the winner!"
+        return "win"
       end
     end
   
     def valid_input?(input) 
-      return input > 0 && input < 10 && !@board.space_taken?(input - 1)
+      if input > 0 && input < 10 && @board.space_taken?(input - 1) == false
+        return true
+      else 
+        return false
+      end
     end
 end
-
